@@ -8,7 +8,7 @@ class WallSwitch extends Subdevice {
   _handleState (state) {
     super._handleState(state)
     Object.keys(state).forEach(function(key) {
-      if (kwy !== "cached") {
+      if (key !== "cached") {
         this._handleChannel(state[key],key)
       }
     }, this)
