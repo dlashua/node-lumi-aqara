@@ -25,6 +25,9 @@ class WallSwitch extends Subdevice {
       case 'long_click':
         this.emit('longClick', switchChannel)
         break
+      default:
+        this.emit('unknown', {'channel':switchChannel, 'state':state})
+        break
     }
 
   }
