@@ -3,40 +3,44 @@ const Subdevice = require('./subdevice')
 class WallSwitch extends Subdevice {
   constructor (opts) {
     super({ sid: opts.sid, type: 'wall_switch' })
-
-    this._switchChannel = null
   }
 
   _handleState (state) {
     super._handleState(state)
 
-    // there are probably better ways to do this, but this works for now.
-    if (!this._handleChannel(state, 0)) this._handleChannel(state, 1)
+    if (typeof state["channel_0"] !== 'undefined') {
+      this._handleChannel(state["channel_0"],"left")
+      return
+    }
+ 
+    if (typeof state["channel_1"] !== 'undefined') {
+      this._handleChannel(state["channel_1"],"right")
+      return
+    }
+    
+    if (typeof state["channel_2"] !== 'undefined') {
+      this._handleChannel(state["channel_2"],"both")
+      return
+    }
+    
   }
 
   _handleChannel(state, switchChannel) {
-    if (typeof state["channel_" + switchChannel] === 'undefined') return // might be no_close
 
-    this._switchChannel = switchChannel
-
-    switch (state["channel_" + switchChannel]) {
+    switch (state) {
       case 'click':
-        this.emit('click')
+        this.emit(switchChannel + '_click')
         break
       case 'double_click':
-        this.emit('doubleClick')
+        this.emit(switchChannel + '_doubleClick')
         break
       case 'long_click':
-        this.emit('longClick')
+        this.emit(switchChannel + '_longClick')
         break
     }
 
-    return switchChannel;
   }
 
-  getChannel() {
-    return this._switchChannel
-  }
 }
 
 module.exports = WallSwitch
