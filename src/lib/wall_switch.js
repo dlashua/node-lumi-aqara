@@ -8,19 +8,8 @@ class WallSwitch extends Subdevice {
   _handleState (state) {
     super._handleState(state)
 
-    if (typeof state["channel_0"] !== 'undefined') {
-      this._handleChannel(state["channel_0"],"left")
-      return
-    }
- 
-    if (typeof state["channel_1"] !== 'undefined') {
-      this._handleChannel(state["channel_1"],"right")
-      return
-    }
-    
-    if (typeof state["channel_2"] !== 'undefined') {
-      this._handleChannel(state["channel_2"],"both")
-      return
+    Object.keys(state).forEach(function(key) {    
+      this._handleChannel(state[key],key)
     }
     
   }
@@ -29,13 +18,13 @@ class WallSwitch extends Subdevice {
 
     switch (state) {
       case 'click':
-        this.emit(switchChannel + '_click')
+        this.emit('click', switchChannel)
         break
       case 'double_click':
-        this.emit(switchChannel + '_doubleClick')
+        this.emit('doubleClick', switchChannel)
         break
       case 'long_click':
-        this.emit(switchChannel + '_longClick')
+        this.emit('longClick', switchChannel)
         break
     }
 
