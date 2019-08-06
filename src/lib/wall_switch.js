@@ -7,8 +7,10 @@ class WallSwitch extends Subdevice {
 
   _handleState (state) {
     super._handleState(state)
-    Object.keys(state).forEach(function(key) {    
-      this._handleChannel(state[key],key)
+    Object.keys(state).forEach(function(key) {
+      if (kwy !== "cached") {
+        this._handleChannel(state[key],key)
+      }
     }, this)
     
   }
@@ -17,12 +19,15 @@ class WallSwitch extends Subdevice {
 
     switch (state) {
       case 'click':
+      case 'both_click':
         this.emit('click', switchChannel)
         break
       case 'double_click':
+      case 'double_both_click':
         this.emit('doubleClick', switchChannel)
         break
       case 'long_click':
+      case 'long_both_click':
         this.emit('longClick', switchChannel)
         break
       default:
