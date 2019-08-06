@@ -10,7 +10,7 @@ class WallSwitch extends Subdevice {
 
     Object.keys(state).forEach(function(key) {    
       this._handleChannel(state[key],key)
-    }
+    })
     
   }
 
